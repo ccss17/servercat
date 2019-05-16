@@ -3,6 +3,9 @@ import 'package:oscilloscope/oscilloscope.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:math';
 import 'dart:async';
+import 'fetch-json.dart';
+import 'chart-demo.dart';
+import 'chart-demo2.dart';
 
 /*
 googlechart JS 라이브러리를 쓰기 위해서는
@@ -47,7 +50,10 @@ flutter 차트
 https://google.github.io/charts/flutter/gallery.html
 https://flutterawesome.com/tag/chart/
 * */
-void main() => runApp(new MyApp());
+// void main() => runApp(new SimpleTimeSeriesChart());
+// void main() => runApp(new ItemDetailsPage());
+// void main() => runApp(MyApp());
+void main() => runApp(FetchJsonTest(post: fetchPost()));
 
 class MyApp extends StatelessWidget {
   @override
@@ -71,7 +77,7 @@ class _ShellState extends State<Shell> {
   @override
   initState() {
     super.initState();
-    accelerometerEvents.listen( (AccelerometerEvent event){
+    accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
         traceX.add(event.x);
       });
@@ -94,7 +100,6 @@ class _ShellState extends State<Shell> {
       yAxisMin: -10.0,
       dataSet: traceX,
     );
-
 
     // Generate the Scaffold
     return Scaffold(
