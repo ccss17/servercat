@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_netdata/netdata-charts/processes-chart.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -20,16 +21,16 @@ Future<Post> fetchPost() async {
 }
 
 class Post {
-  final List<dynamic> cols;
-  final List<dynamic> rows;
-  static List<ColsItem> colsItem = List<ColsItem>();
-  static List<RowsItem> rowsItem = List<RowsItem>();
+  List<ColsItem> colsItemList = List<ColsItem>();
+  List<RowsItem> rowsItemList = List<RowsItem>();
 
-  Post({this.cols, this.rows});
+  Post({this.colsItemList, this.rowsItemList});
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    List<ColsItem> colsItem_tmp = List<ColsItem>();
+    List<RowsItem> rowsItem_tmp = List<RowsItem>();
     json['cols'].forEach((e) {
-      colsItem.add(ColsItem(
+      colsItem_tmp.add(ColsItem(
           id: e['id'],
           label: e['label'],
           pattern: e['pattern'],
@@ -37,16 +38,10 @@ class Post {
           p: e['p'] ?? null));
     });
     json['rows'].forEach((e) {
-      rowsItem.add(RowsItem(c: e['c']));
+      rowsItem_tmp.add(RowsItem(c: e['c']));
     });
 
-    // colsItem.forEach((e) => print(e.p.toString()));
-    // rowsItem.forEach((e) => print(e.c.toString()));
-
-    return Post(
-      cols: json['cols'],
-      rows: json['rows'],
-    );
+    return Post(colsItemList: colsItem_tmp, rowsItemList: rowsItem_tmp);
   }
 }
 
@@ -71,10 +66,37 @@ class RowsItem {
   RowsItem({this.c});
 }
 
-class FetchJsonTest extends StatelessWidget {
+class FetchProcesses extends StatefulWidget {
   final Future<Post> post;
 
-  FetchJsonTest({Key key, this.post}) : super(key: key);
+  FetchProcesses({this.post});
+  @override
+  FetchProcessesState createState() => FetchProcessesState(post: this.post);
+}
+
+class FetchProcessesState extends State<FetchProcesses> {
+  Future<Post> post;
+  Timer _timer;
+
+  FetchProcessesState({this.post});
+
+  _generateTrace(Timer t) {
+    setState(() {
+      post = fetchPost();
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(milliseconds: 2000), _generateTrace);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +108,26 @@ class FetchJsonTest extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Fetch Data Example'),
+          backgroundColor: Colors.black,
         ),
         body: Center(
           child: FutureBuilder<Post>(
             future: post,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data.cols.toString());
+                return MaterialApp(
+//        theme: defaultConfig.theme,
+//        showPerformanceOverlay: _showPerformanceOverlay,
+                  home: ListView(
+                    padding: EdgeInsets.all(8.0),
+                    children: <Widget>[
+                      SizedBox(
+                        height: 250.0,
+                        child: ProcessesChart.withJson(snapshot.data),
+                      ),
+                    ],
+                  ),
+                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
