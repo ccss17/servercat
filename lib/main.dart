@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'app.dart';
+import 'home.dart';
 import 'fetch-processes.dart';
+import 'post.dart';
+import 'fetch-cpu.dart';
+
+void main() => runApp(FlutterNetdata());
+// void main() => runApp(FetchProcesses(post: fetchPost('system.processes')));
+// void main() => runApp(FetchCpu(post: fetchPost('system.cpu')));
 
 /*
-googlechart JS 라이브러리를 쓰기 위해서는
- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
- 이런식으로 loader.js 를 입력한 후 web 에서 사용할 수 있음.
-그래서 flutter 에서 googld chart API 를 쓰기 힘든데, 만약 JS 라이브러리를 flutter 에
-포팅해줄 수 있는 flutter 플러그인이 있다면?
-검색해봤는데 쉽지는 않은 것 같음
-
-==> 그냥 JSON 가져와서 파싱한 후 osilloscope 나 time-serise chart 에 랜더링해주는 게 최선인듯
-
-
 netdata API
 https://registry.my-netdata.io/swagger/#/
 
@@ -19,7 +17,6 @@ https://registry.my-netdata.io/swagger/#/
 https://pub.dev/packages/flutter_charts
 https://pub.dev/packages/charts_flutter
 https://pub.flutter-io.cn/packages/chartjs#-readme-tab-
-
 
 내가 정확하게 원하는 질문:
 https://stackoverflow.com/questions/51739064/flutter-json-and-time-series-charts
@@ -44,5 +41,3 @@ flutter 차트
 https://google.github.io/charts/flutter/gallery.html
 https://flutterawesome.com/tag/chart/
 * */
-
-void main() => runApp(FetchProcesses(post: fetchPost()));

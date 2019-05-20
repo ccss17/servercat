@@ -1,18 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../fetch-processes.dart';
-
-DateTime parseStringToDatetime(String text) {
-  var time = text.split('(')[1].split(')')[0].split(',');
-  var str = '';
-  time.forEach((e) {
-    if (e.length == 1) {
-      e = '0' + e;
-    }
-    str += e;
-  });
-  return DateTime.parse(str.substring(0, 8) + 'T' + str.substring(8));
-}
+import '../post.dart';
 
 class ProcessesChart extends StatelessWidget {
   final List<charts.Series> seriesList;
