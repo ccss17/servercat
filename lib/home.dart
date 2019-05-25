@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth.dart';
 import 'server.dart';
+import 'fetch-processes.dart';
+import 'post.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -89,24 +91,29 @@ class HomePageState extends State<HomePage> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final server = Server.fromSnapshot(data);
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      ),
-      elevation: 2.0,
-      child: Column(
-        children: <Widget>[
-          Text(
-            server.domain ?? "TEST",
-            style: Theme.of(context).textTheme.title,
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed('/charts', arguments: fetchPost('system.processes'));
+//FetchProcesses(post: fetchPost('system.processes'));
+        },
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          Text(
-            server.host ?? "TEST",
-            style: Theme.of(context).textTheme.caption,
+          elevation: 2.0,
+          child: Column(
+            children: <Widget>[
+              Text(
+                server.domain,
+                style: Theme.of(context).textTheme.title,
+              ),
+              Text(
+                server.host,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

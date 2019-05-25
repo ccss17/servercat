@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'home.dart';
-import 'fetch-processes.dart';
-import 'post.dart';
 import 'fetch-cpu.dart';
 
 void main() => runApp(FlutterNetdata());
