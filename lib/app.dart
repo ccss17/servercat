@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_netdata/fetch-processes.dart';
 
 import 'home.dart';
 import 'login.dart';
 import 'add.dart';
+import 'fetch-processes.dart';
 
 class FlutterNetdata extends StatelessWidget {
   @override
@@ -23,6 +25,12 @@ class FlutterNetdata extends StatelessWidget {
         return _buildRoute(settings, LoginPage());
       case '/add':
         return _buildRoute(settings, AddPage());
+      case '/charts':
+        return _buildRoute(
+            settings,
+            FetchProcesses(
+              post: settings.arguments,
+            ));
       default:
         return null;
     }

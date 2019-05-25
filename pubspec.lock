@@ -165,6 +165,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.2"
+  path_provider:
+    dependency: "direct main"
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   pedantic:
     dependency: transitive
     description:
@@ -198,6 +205,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.5"
+  ssh:
+    dependency: "direct main"
+    description:
+      name: ssh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   stack_trace:
     dependency: transitive
     description:
@@ -246,7 +260,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "1.0.3"
   vector_math:
     dependency: transitive
     description:

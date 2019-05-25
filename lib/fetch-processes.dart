@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter_netdata/netdata-charts/processes-chart.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_netdata/ssh_util.dart';
 import 'post.dart';
+import 'ssh_util.dart';
 
 class FetchProcesses extends StatefulWidget {
   final Future<Post> post;
@@ -63,6 +65,10 @@ class FetchProcessesState extends State<FetchProcesses> {
                         height: 250.0,
                         child: ProcessesChart.withJson(snapshot.data),
                       ),
+                      SSHDemo(
+                          host: '54.180.132.66',
+                          ssh_id: 'ubuntu',
+                          ssh_pw: 'ekfkawnl33')
                     ],
                   ),
                 );
