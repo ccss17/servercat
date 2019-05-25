@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth.dart';
 import 'server.dart';
+import 'post.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +19,12 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     BuildContext _context = context;
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/add');
+          },
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.grey,
           brightness: Brightness.light,
@@ -48,38 +55,14 @@ class HomePageState extends State<HomePage> {
                 .where('uid', isEqualTo: authService.getUid())
                 .snapshots(),
             builder: (context, snapshot) {
-              List<Widget> tmp = snapshot.data.documents
-                  .map((data) => _buildListItem(context, data))
-                  .toList();
-              tmp.add(Card(
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                elevation: 2.0,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Connect your server!",
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/add');
-                      },
-                    ),
-                  ],
-                ),
-              ));
+              print(snapshot.data.documents.length);
               return GridView.count(
                 crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
                 childAspectRatio: 0.90,
                 padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                children: tmp,
-                // snapshot.data.documents
-                //     .map((data) => _buildListItem(context, data))
-                //     .toList(),
+                children: snapshot.data.documents
+                    .map((data) => _buildListItem(context, data))
+                    .toList(),
               );
             },
           );
@@ -89,24 +72,29 @@ class HomePageState extends State<HomePage> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final server = Server.fromSnapshot(data);
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      ),
-      elevation: 2.0,
-      child: Column(
-        children: <Widget>[
-          Text(
-            server.domain ?? "TEST",
-            style: Theme.of(context).textTheme.title,
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context)
+              .pushNamed('/charts', arguments: fetchPost('system.processes'));
+        },
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          Text(
-            server.host ?? "TEST",
-            style: Theme.of(context).textTheme.caption,
+          elevation: 2.0,
+          child: Column(
+            children: <Widget>[
+              Text(
+                server.domain,
+                style: Theme.of(context).textTheme.title,
+              ),
+              Text(
+                server.host,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
