@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 import 'auth.dart';
 
 class AddPage extends StatefulWidget {
@@ -12,96 +13,186 @@ class AddPage extends StatefulWidget {
 class AddPageState extends State<AddPage> {
   final _label = TextEditingController();
   final _domain = TextEditingController();
-  final _host = TextEditingController();
+  final _sshid = TextEditingController();
+  final _pw = TextEditingController();
+  final _protocol = TextEditingController(text: 'http');
+  final _port = TextEditingController(text: '19999');
+  bool _portValidate = false;
+  bool _protocolValidate = false;
   bool _domainValidate = false;
+  bool _pwValidate = false;
   bool _labelValidate = false;
   bool _hostValidate = false;
+  String _uuid = Uuid().v1();
+
+  bool allfilled() {
+    return !_domainValidate &&
+        !_hostValidate &&
+        !_labelValidate &&
+        !_pwValidate &&
+        !_protocolValidate &&
+        !_portValidate;
+  }
+
+  void checkAllTextController() {
+    void _check(TextEditingController con, bool val) {
+      con.text.isEmpty ? val = true : val = false;
+    }
+
+    _check(_domain, _domainValidate);
+    _check(_sshid, _hostValidate);
+    _check(_label, _labelValidate);
+    _check(_pw, _pwValidate);
+    _check(_port, _portValidate);
+    _check(_protocol, _protocolValidate);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.grey,
-          brightness: Brightness.light,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text('Add'),
-          centerTitle: true,
-          actions: <Widget>[
-            MaterialButton(
-              child: Text(
-                "Save",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () async {
-                setState(() {
-                  _domain.text.isEmpty
-                      ? _domainValidate = true
-                      : _domainValidate = false;
-                  _host.text.isEmpty
-                      ? _hostValidate = true
-                      : _hostValidate = false;
-                  _label.text.isEmpty
-                      ? _labelValidate = true
-                      : _labelValidate = false;
-                });
-                if (!_domainValidate && !_hostValidate && !_labelValidate) {
-                  var data = Map<String, dynamic>();
-                  data['domain'] = _domain.text;
-                  data['host'] = _host.text;
-                  data['label'] = _label.text;
-                  data['uid'] = authService.getUid();
-                  Firestore.instance.runTransaction((transaction) async {
-                    await transaction.set(
-                        Firestore.instance
-                            .collection("servers")
-                            .document(data['uid']),
-                        data);
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+      backgroundColor: Color(0xff333366),
+      appBar: AppBar(
+        backgroundColor: Color(0xff353848),
+        automaticallyImplyLeading: false,
+        brightness: Brightness.light,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: Column(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                TextField(
-                  controller: _label,
-                  decoration: InputDecoration(
-                    filled: true,
-                    labelText: 'Server label',
-                    errorText:
-                        _domainValidate ? 'Please Enter Domain Name' : null,
-                  ),
-                ),
-                TextField(
-                  controller: _domain,
-                  decoration: InputDecoration(
-                    filled: true,
-                    labelText: 'Server IP or Domain',
-                    errorText: _domainValidate
-                        ? 'Please Enter IP or Domain Name'
-                        : null,
-                  ),
-                ),
-                TextField(
-                  controller: _host,
-                  decoration: InputDecoration(
-                    filled: true,
-                    labelText: 'SSH Name',
-                    errorText: _hostValidate ? 'Please Enter Host' : null,
-                  ),
-                ),
-              ],
-              // ),
+        title: Text('Add'),
+        centerTitle: true,
+        actions: <Widget>[
+          MaterialButton(
+            child: Text(
+              "Save",
+              style: TextStyle(color: Colors.white),
             ),
-          ],
-        ));
+            onPressed: () async {
+              setState(() {
+                checkAllTextController();
+              });
+              if (allfilled()) {
+                var data = Map<String, dynamic>();
+                data['domain'] = _domain.text;
+                data['sshid'] = _sshid.text;
+                data['label'] = _label.text;
+                data['pw'] = _pw.text;
+                data['port'] = _port.text;
+                data['uuid'] = _uuid;
+                data['protocol'] = _protocol.text;
+                data['uid'] = authService.getUid();
+                Firestore.instance.runTransaction((transaction) async {
+                  await transaction.set(
+                      Firestore.instance
+                          .collection("servers")
+                          .document(data['uuid']),
+                      data);
+                });
+                Navigator.of(context).pop();
+              }
+            },
+          )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          getTextField(
+              _label, 'Server label', 'Please Enter Domain Name', false,
+              validate: _labelValidate),
+          getTextField(_domain, 'Server IP or Domain',
+              'Please Enter IP or Domain Name', false,
+              help: "HELP?", validate: _domainValidate),
+          getTextField(_protocol, 'Netdata Protocol',
+              'Please Enter Netdata Protocol', false,
+              validate: _protocolValidate),
+          getTextField(
+              _port, 'Netdata Port', 'Please Enter Netdata Port', false,
+              intType: true, validate: _portValidate),
+          getTextField(_sshid, 'SSH ID', 'Please Enter SSH ID', false,
+              validate: _hostValidate),
+          getTextField(_pw, 'SSH Password', 'Please Enter SSH Password', true,
+              validate: _pwValidate),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              MaterialButton(
+                color: Colors.blueAccent,
+                child: Text(
+                  "Save",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    checkAllTextController();
+                  });
+                  if (allfilled()) {
+                    var data = Map<String, dynamic>();
+                    data['domain'] = _domain.text;
+                    data['sshid'] = _sshid.text;
+                    data['label'] = _label.text;
+                    data['pw'] = _pw.text;
+                    data['port'] = _port.text;
+                    data['uuid'] = _uuid;
+                    data['protocol'] = _protocol.text;
+                    data['uid'] = authService.getUid();
+                    Firestore.instance.runTransaction((transaction) async {
+                      await transaction.set(
+                          Firestore.instance
+                              .collection("servers")
+                              .document(data['uuid']),
+                          data);
+                    });
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              SizedBox(
+                width: 35,
+              ),
+              MaterialButton(
+                color: Colors.red,
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getTextField(TextEditingController _controller, String _label,
+      String _error, bool obscure,
+      {bool intType = false, String help = null, bool validate}) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 17, 20, 10),
+      child: TextField(
+        keyboardType: intType ? TextInputType.text : TextInputType.number,
+        autofocus: true,
+        controller: _controller,
+        decoration: InputDecoration(
+          fillColor: Color(0xee6666b2),
+          filled: true,
+          helperText: help, // "This is help message",
+          labelText: _label,
+          labelStyle: TextStyle(color: Color(0xffababd3)),
+          helperStyle: TextStyle(color: Color(0xffababd3)),
+          errorText: validate ? _error : null,
+        ),
+        obscureText: obscure,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
 }

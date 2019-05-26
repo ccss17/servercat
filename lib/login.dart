@@ -10,19 +10,38 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff353848),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
             SizedBox(height: 80.0),
-            Column(
-              children: <Widget>[
-                Image.network(
-                    'https://image.i-voce.jp/files/article/main/7Rt7xosL_1544077098.jpg'),
-              ],
+            Container(
+              alignment: Alignment.center,
+              child: SizedBox(
+                child: Text(
+                  "Flutter",
+                  style: TextStyle(fontSize: 100, color: Colors.white),
+                ),
+              ),
             ),
+            Container(
+              alignment: Alignment.center,
+              child: SizedBox(
+                child: Text(
+                  "Netdata",
+                  style: TextStyle(fontSize: 100, color: Colors.white),
+                ),
+              ),
+            ),
+//            Column(
+//              children: <Widget>[
+//                Image.network(
+//                    'https://image.i-voce.jp/files/article/main/7Rt7xosL_1544077098.jpg'),
+//              ],
+//            ),
             SizedBox(
-              height: 10,
+              height: 100,
             ),
             LoginButton(),
           ],
@@ -48,7 +67,8 @@ class LoginButton extends StatelessWidget {
             );
           } else {
             return MaterialButton(
-              minWidth: 300,
+              height: 50,
+              minWidth: 100,
               onPressed: () => authService.googleSignIn(),
               color: Colors.red,
               textColor: Colors.white,

@@ -21,14 +21,15 @@ String split_netdata(String text) {
   return (test.substring(1, test.indexOf(';') - 2));
 }
 
-Future<Post> fetchPost(List<String> args) async {
-  String retriveURL = args[0] +
+Future<Post> fetchPost(
+    String protocol, String domain, String port, String collector) async {
+  String retriveURL = protocol +
       '://' +
-      args[1] +
+      domain +
       ':' +
-      args[2] +
+      port +
       '/api/v1/data?after=-60&format=datasource&options=nonzero&chart=' +
-      args[3]; //collector;
+      collector;
   final response = await http.get(retriveURL);
   if (response.statusCode == 200) {
     return Post.fromJson(json.decode(split_netdata(response.body)));

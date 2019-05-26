@@ -2,35 +2,35 @@ import 'dart:async';
 import 'package:flutter_netdata/netdata-charts/processes-chart.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_netdata/ssh_util.dart';
 import 'post.dart';
-import 'ssh_util.dart';
+import 'server.dart';
 
 class FetchProcesses extends StatefulWidget {
-  final List<String> args;
+  final Server serv;
 
-  FetchProcesses({this.args});
+  FetchProcesses({this.serv});
   @override
-  FetchProcessesState createState() => FetchProcessesState(args: this.args);
+  FetchProcessesState createState() => FetchProcessesState(serv: this.serv);
 }
 
 class FetchProcessesState extends State<FetchProcesses> {
   Future<Post> post;
-  final List<String> args;
+  final Server serv;
   Timer _timer;
 
-  FetchProcessesState({this.args});
+  FetchProcessesState({this.serv});
 
   _generateTrace(Timer t) {
     setState(() {
-      post = fetchPost(args);
+      post =
+          fetchPost(serv.protocol, serv.domain, serv.port, 'system.processes');
     });
   }
 
   @override
   initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(milliseconds: 2000), _generateTrace);
+    _timer = Timer.periodic(Duration(milliseconds: 3000), _generateTrace);
   }
 
   @override
@@ -41,46 +41,14 @@ class FetchProcessesState extends State<FetchProcesses> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fetch Data Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Fetch Data Example'),
-          backgroundColor: Colors.black,
-        ),
-        body: Center(
-          child: FutureBuilder<Post>(
-            future: post,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return MaterialApp(
-//        theme: defaultConfig.theme,
-//        showPerformanceOverlay: _showPerformanceOverlay,
-                  home: ListView(
-                    padding: EdgeInsets.all(8.0),
-                    children: <Widget>[
-                      SizedBox(
-                        height: 250.0,
-                        child: ProcessesChart.withJson(snapshot.data),
-                      ),
-                      SSHDemo(
-                          host: '54.180.132.66',
-                          ssh_id: 'ubuntu',
-                          ssh_pw: 'ekfkawnl33')
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            },
-          ),
-        ),
-      ),
-    );
+    return FutureBuilder<Post>(
+        future: post,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ProcessesChart.withJson(snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+        });
   }
 }

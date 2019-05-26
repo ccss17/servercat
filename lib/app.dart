@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_netdata/fetch-processes.dart';
 
 import 'home.dart';
 import 'login.dart';
 import 'add.dart';
-import 'fetch-processes.dart';
+import 'dashboard.dart';
 
 class FlutterNetdata extends StatelessWidget {
   @override
@@ -28,8 +27,8 @@ class FlutterNetdata extends StatelessWidget {
       case '/charts':
         return _buildRoute(
             settings,
-            FetchProcesses(
-              args: settings.arguments,
+            Dashboard(
+              serv: settings.arguments,
             ));
       default:
         return null;
