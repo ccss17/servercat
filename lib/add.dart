@@ -10,9 +10,11 @@ class AddPage extends StatefulWidget {
 }
 
 class AddPageState extends State<AddPage> {
+  final _label = TextEditingController();
   final _domain = TextEditingController();
   final _host = TextEditingController();
   bool _domainValidate = false;
+  bool _labelValidate = false;
   bool _hostValidate = false;
 
   @override
@@ -42,11 +44,15 @@ class AddPageState extends State<AddPage> {
                   _host.text.isEmpty
                       ? _hostValidate = true
                       : _hostValidate = false;
+                  _label.text.isEmpty
+                      ? _labelValidate = true
+                      : _labelValidate = false;
                 });
-                if (!_domainValidate && !_hostValidate) {
+                if (!_domainValidate && !_hostValidate && !_labelValidate) {
                   var data = Map<String, dynamic>();
                   data['domain'] = _domain.text;
                   data['host'] = _host.text;
+                  data['label'] = _label.text;
                   data['uid'] = authService.getUid();
                   Firestore.instance.runTransaction((transaction) async {
                     await transaction.set(
@@ -66,19 +72,29 @@ class AddPageState extends State<AddPage> {
             Column(
               children: <Widget>[
                 TextField(
+                  controller: _label,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Server label',
+                    errorText:
+                        _domainValidate ? 'Please Enter Domain Name' : null,
+                  ),
+                ),
+                TextField(
                   controller: _domain,
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: 'Domain',
-                    errorText:
-                        _domainValidate ? 'Please Enter Domain Name' : null,
+                    labelText: 'Server IP or Domain',
+                    errorText: _domainValidate
+                        ? 'Please Enter IP or Domain Name'
+                        : null,
                   ),
                 ),
                 TextField(
                   controller: _host,
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: 'Host',
+                    labelText: 'SSH Name',
                     errorText: _hostValidate ? 'Please Enter Host' : null,
                   ),
                 ),

@@ -4,6 +4,7 @@ class Server {
   String domain;
   String host;
   String uid;
+  String label;
   DocumentReference reference;
 
   Server.fromMap(Map<String, dynamic> map, {this.reference})

@@ -74,8 +74,13 @@ class HomePageState extends State<HomePage> {
 
     return GestureDetector(
         onTap: () {
-          Navigator.of(context)
-              .pushNamed('/charts', arguments: fetchPost('system.processes'));
+          List<String> args = [
+            'http',
+            '54.180.132.66',
+            '19999',
+            'system.processes'
+          ];
+          Navigator.of(context).pushNamed('/charts', arguments: args);
         },
         child: Card(
           clipBehavior: Clip.antiAlias,
@@ -85,6 +90,10 @@ class HomePageState extends State<HomePage> {
           elevation: 2.0,
           child: Column(
             children: <Widget>[
+              Text(
+                server.label ?? "NULL",
+                style: Theme.of(context).textTheme.title,
+              ),
               Text(
                 server.domain,
                 style: Theme.of(context).textTheme.title,

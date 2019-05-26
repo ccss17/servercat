@@ -7,22 +7,23 @@ import 'post.dart';
 import 'ssh_util.dart';
 
 class FetchProcesses extends StatefulWidget {
-  final Future<Post> post;
+  final List<String> args;
 
-  FetchProcesses({this.post});
+  FetchProcesses({this.args});
   @override
-  FetchProcessesState createState() => FetchProcessesState(post: this.post);
+  FetchProcessesState createState() => FetchProcessesState(args: this.args);
 }
 
 class FetchProcessesState extends State<FetchProcesses> {
   Future<Post> post;
+  final List<String> args;
   Timer _timer;
 
-  FetchProcessesState({this.post});
+  FetchProcessesState({this.args});
 
   _generateTrace(Timer t) {
     setState(() {
-      post = fetchPost('system.processes');
+      post = fetchPost(args);
     });
   }
 
