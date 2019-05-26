@@ -29,7 +29,7 @@ class FlutterNetdata extends StatelessWidget {
         return _buildRoute(
             settings,
             FetchProcesses(
-              post: settings.arguments,
+              args: settings.arguments,
             ));
       default:
         return null;

@@ -21,12 +21,15 @@ String split_netdata(String text) {
   return (test.substring(1, test.indexOf(';') - 2));
 }
 
-Future<Post> fetchPost(String arg) async {
-  // + 'system.cpu'
-  // + 'system.processes'
-  final response = await http.get(
-      'http://54.180.132.66:19999/api/v1/data?after=-60&format=datasource&options=nonzero&chart=' +
-          arg);
+Future<Post> fetchPost(List<String> args) async {
+  String retriveURL = args[0] +
+      '://' +
+      args[1] +
+      ':' +
+      args[2] +
+      '/api/v1/data?after=-60&format=datasource&options=nonzero&chart=' +
+      args[3]; //collector;
+  final response = await http.get(retriveURL);
   if (response.statusCode == 200) {
     return Post.fromJson(json.decode(split_netdata(response.body)));
   } else {
