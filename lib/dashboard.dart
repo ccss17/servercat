@@ -37,6 +37,7 @@ class Dashboard extends StatelessWidget {
                     height: 250.0,
                     child: FetchProcesses(
                       serv: serv,
+                      interval: 1000,
                     ),
                   ),
                 ],
