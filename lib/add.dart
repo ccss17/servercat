@@ -94,17 +94,14 @@ class AddPageState extends State<AddPage> {
           )
         ],
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
-          SizedBox(
-            height: 30,
-          ),
           getTextField(
               _label, 'Server label', 'Please Enter Domain Name', false,
               validate: _labelValidate),
           getTextField(_domain, 'Server IP or Domain',
               'Please Enter IP or Domain Name', false,
-              help: "HELP?", validate: _domainValidate),
+              help: "ex) 192.168.0.1 or www.example.com ", validate: _domainValidate),
           getTextField(_protocol, 'Netdata Protocol',
               'Please Enter Netdata Protocol', false,
               validate: _protocolValidate),
@@ -153,7 +150,7 @@ class AddPageState extends State<AddPage> {
                 },
               ),
               SizedBox(
-                width: 35,
+                width: 10,
               ),
               MaterialButton(
                 color: Colors.red,
@@ -176,9 +173,9 @@ class AddPageState extends State<AddPage> {
       String _error, bool obscure,
       {bool intType = false, String help = null, bool validate}) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 17, 20, 10),
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: TextField(
-        keyboardType: intType ? TextInputType.text : TextInputType.number,
+        keyboardType: intType ? TextInputType.number: TextInputType.text ,
         autofocus: true,
         controller: _controller,
         decoration: InputDecoration(

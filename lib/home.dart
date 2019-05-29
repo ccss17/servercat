@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth.dart';
 import 'server.dart';
-import 'post.dart';
+import 'package:line_icons/line_icons.dart';
 
 // https://sergiandreplace.com/planets-flutter-creating-a-planet-card/
 // 여기에 가이드 나와있는 Stack 으로 구글 맵 해서 위도경도 표시해주고싶다
@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> {
           brightness: Brightness.light,
           leading: Builder(
             builder: (context) => IconButton(
-                  icon: Icon(Icons.account_circle),
+                  icon: Icon(LineIcons.navicon),
                   onPressed: () {
                     Navigator.of(context).pushNamed('/profile');
                   },
@@ -67,108 +67,105 @@ class HomePageState extends State<HomePage> {
             builder: (context, snapshot) {
 //              print(snapshot.data.documents.length);
               return ListView(
-                children: snapshot.data.documents.map((data) {
-                  final server = Server.fromSnapshot(data);
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('/charts', arguments: server);
-                    },
-                    child: Container(
-                      height: 124.0,
-                      margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                      decoration: BoxDecoration(
-                          color: Color(0xee6666b2),
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10.0,
-                              offset: Offset(0.0, 10.0),
-                            )
-                          ]),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: Text(
-                                server.label ?? "NULL",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: Text(
-                                server.sshid ?? "NULL",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: Text(
-                                server.domain,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        backgroundColor: Color(0xee6666b2),
-                                        title: Text(
-                                          "Delete Server",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            color: Colors.blue,
-                                            child: Center(
-                                              child: Text(
-                                                "Delete",
+                children: snapshot.data.documents != null
+                    ? snapshot.data.documents.map((data) {
+                        final server = Server.fromSnapshot(data);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('/charts', arguments: server);
+                          },
+                          child: Container(
+                            height: 124.0,
+                            margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                            decoration: BoxDecoration(
+                                color: Color(0xee6666b2),
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 10.0,
+                                    offset: Offset(0.0, 10.0),
+                                  )
+                                ]),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Text(
+                                      server.label ?? "NULL",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Text(
+                                      server.sshid ?? "NULL",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor:
+                                                  Color(0xee6666b2),
+                                              title: Text(
+                                                "Delete Server",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
-                                            ),
-                                            onPressed: () {
-                                              Firestore.instance.runTransaction(
-                                                  (transaction) async {
-                                                await transaction
-                                                    .delete(data.reference);
-                                              });
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          SizedBox(width: 10),
-                                          FlatButton(
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    });
-                              },
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  color: Colors.blue,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Firestore.instance
+                                                        .runTransaction(
+                                                            (transaction) async {
+                                                      await transaction.delete(
+                                                          data.reference);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                SizedBox(width: 10),
+                                                FlatButton(
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                          ),
+                        );
+                      }).toList()
+                    : Text("NULL"),
               );
             },
           );

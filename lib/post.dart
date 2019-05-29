@@ -38,27 +38,6 @@ Future<Post> fetchPost(
   }
 }
 
-class ColsItem {
-  final String id;
-  final String label;
-  final String pattern;
-  final String type;
-  final Map<String, dynamic> p;
-
-  ColsItem(
-      {@required this.id,
-      @required this.label,
-      @required this.pattern,
-      @required this.type,
-      @required this.p});
-}
-
-class RowsItem {
-  final List<dynamic> c;
-
-  RowsItem({this.c});
-}
-
 class Post {
   List<ColsItem> colsItemList = List<ColsItem>();
   List<RowsItem> rowsItemList = List<RowsItem>();
@@ -82,4 +61,25 @@ class Post {
 
     return Post(colsItemList: colsItem_tmp, rowsItemList: rowsItem_tmp);
   }
+}
+
+class ColsItem {
+  final String id;
+  final String label;
+  final String pattern;
+  final String type;
+  final Map<String, dynamic> p;
+
+  ColsItem(
+      {@required this.id,
+      @required this.label,
+      @required this.pattern,
+      @required this.type,
+      @required this.p});
+}
+
+class RowsItem {
+  final List<dynamic> c;
+
+  RowsItem({this.c});
 }

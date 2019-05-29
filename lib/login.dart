@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 child: Text(
                   "Flutter",
-                  style: TextStyle(fontSize: 100, color: Colors.white),
+                  style: TextStyle(fontSize: 70, color: Colors.white),
                 ),
               ),
             ),
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 child: Text(
                   "Netdata",
-                  style: TextStyle(fontSize: 100, color: Colors.white),
+                  style: TextStyle(fontSize: 70, color: Colors.white),
                 ),
               ),
             ),

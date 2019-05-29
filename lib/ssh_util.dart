@@ -44,7 +44,7 @@ class SSHPageState extends State<SSHPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
         Container(
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),

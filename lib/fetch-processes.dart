@@ -18,7 +18,9 @@ class FetchProcessesState extends State<FetchProcesses> {
   final Server serv;
   Timer _timer;
 
-  FetchProcessesState({this.serv});
+  FetchProcessesState({this.serv}) {
+    post = fetchPost(serv.protocol, serv.domain, serv.port, 'system.processes');
+  }
 
   _generateTrace(Timer t) {
     setState(() {
@@ -30,6 +32,7 @@ class FetchProcessesState extends State<FetchProcesses> {
   @override
   initState() {
     super.initState();
+    post = fetchPost(serv.protocol, serv.domain, serv.port, 'system.processes');
     _timer = Timer.periodic(Duration(milliseconds: 3000), _generateTrace);
   }
 
@@ -44,11 +47,7 @@ class FetchProcessesState extends State<FetchProcesses> {
     return FutureBuilder<Post>(
         future: post,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ProcessesChart.withJson(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
+          return ProcessesChart.withJson(snapshot.data);
         });
   }
 }
