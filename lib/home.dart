@@ -99,7 +99,7 @@ class HomePageState extends State<HomePage> {
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.symmetric(
-                                        horizontal: 40.0, vertical: 30.0),
+                                        horizontal: 10.0, vertical: 30.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -159,9 +159,7 @@ class HomePageState extends State<HomePage> {
                                                           Firestore.instance
                                                               .runTransaction(
                                                                   (transaction) async {
-                                                            await transaction
-                                                                .delete(data
-                                                                    .reference);
+                                                            await transaction .delete(data .reference);
                                                           });
                                                           Navigator.of(context)
                                                               .pop();
@@ -193,7 +191,7 @@ class HomePageState extends State<HomePage> {
                                       children: <Widget>[
                                         Container(
                                           margin: EdgeInsets.symmetric(
-                                              horizontal: 40.0),
+                                              horizontal: 10.0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

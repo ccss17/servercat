@@ -101,7 +101,8 @@ class AddPageState extends State<AddPage> {
               validate: _labelValidate),
           getTextField(_domain, 'Server IP or Domain',
               'Please Enter IP or Domain Name', false,
-              help: "ex) 192.168.0.1 or www.example.com ", validate: _domainValidate),
+              help: "ex) 192.168.0.1 or www.example.com ",
+              validate: _domainValidate),
           getTextField(_protocol, 'Netdata Protocol',
               'Please Enter Netdata Protocol', false,
               validate: _protocolValidate),
@@ -175,7 +176,7 @@ class AddPageState extends State<AddPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: TextField(
-        keyboardType: intType ? TextInputType.number: TextInputType.text ,
+        keyboardType: intType ? TextInputType.number : TextInputType.text,
         autofocus: true,
         controller: _controller,
         decoration: InputDecoration(

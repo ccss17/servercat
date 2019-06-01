@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 import 'home.dart';
 import 'fetch-cpu.dart';
+// 배찌 메인 아이콘 몇 개정 도 활용... 
+//  다음 주 월요일에는 로그랑 히스토리 기능 + 디렉토리 살짝 보여줄 수 있는 정도로만 하고
+// 월요일에는 다 프로젝트를 끝낸ㄴ다는 느낌으로 가자
+// 그리고 또 다른 디테일은 1.5 2.0 버전에 넣겠다 라는 로드맵을 짜버려 그냥! 
+
+// 디렉토리 나열 그래서 만약 /var/log/nginx 를 버튼 클릭한다면, 그 파일의 컨텐츠를 볼 수 있는 거지 
+// 차트는 디폴트로 CPU, 프로세스, 디스크 IO 보여줘바바 버전 1.0 에서는 차트를  다이나믹하게 추가해준느 건 나중에 해도 되!
+// 자주 사용하는 커맨드 버튼을 Listview 로 위로 올리기. - 그리고 그 버튼 바에 커맨드 재실행, 
+
 
 void main() => runApp(FlutterNetdata());
 // void main() => runApp(FetchProcesses(post: fetchPost('system.processes')));
