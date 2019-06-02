@@ -3,7 +3,8 @@ import 'package:flutter_netdata/ssh_util.dart';
 import 'directory.dart';
 import 'ssh_util.dart';
 import 'server.dart';
-import 'fetch-processes.dart';
+import 'package:flutter_netdata/netdata-charts/fetch-processes.dart';
+import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
 import 'package:line_icons/line_icons.dart';
 
 class Dashboard extends StatelessWidget {
@@ -58,6 +59,29 @@ class Dashboard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Container(
+                    height: 300.0,
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+//                                color: Color(0xee6666b2),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10.0,
+                            offset: Offset(0.0, 10.0),
+                          )
+                        ]),
+                    child: SizedBox(
+                      height: 250.0,
+                      child: FetchRAM(
+                        serv: serv,
+                        interval: 1000,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Container(
@@ -82,7 +106,7 @@ class Dashboard extends StatelessWidget {
                 height: 300.0,
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 decoration: BoxDecoration(
-                    color: Colors.black87,
+//                    color: Colors.black87,
 //                                color: Color(0xee6666b2),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(8.0),

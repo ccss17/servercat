@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth.dart';
 import 'server.dart';
 import 'package:line_icons/line_icons.dart';
-import 'fetch-processes.dart';
-import 'realtime.dart';
+import 'package:flutter_netdata/netdata-realtime/realtime-processes.dart';
+import 'package:flutter_netdata/netdata-realtime/realtime-ram.dart';
+import 'netdata-charts/fetch-info.dart';
 
 // https://sergiandreplace.com/planets-flutter-creating-a-planet-card/
 // 여기에 가이드 나와있는 Stack 으로 구글 맵 해서 위도경도 표시해주고싶다
@@ -79,7 +80,7 @@ class HomePageState extends State<HomePage> {
                                 .pushNamed('/charts', arguments: server);
                           },
                           child: Container(
-                            height: 300.0,
+                            height: 250.0,
                             margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -99,7 +100,7 @@ class HomePageState extends State<HomePage> {
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.symmetric(
-                                        horizontal: 10.0, vertical: 30.0),
+                                        horizontal: 10.0, vertical: 20.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -159,7 +160,9 @@ class HomePageState extends State<HomePage> {
                                                           Firestore.instance
                                                               .runTransaction(
                                                                   (transaction) async {
-                                                            await transaction .delete(data .reference);
+                                                            await transaction
+                                                                .delete(data
+                                                                    .reference);
                                                           });
                                                           Navigator.of(context)
                                                               .pop();
@@ -189,20 +192,65 @@ class HomePageState extends State<HomePage> {
                                   Container(
                                     child: Column(
                                       children: <Widget>[
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text("Processes"),
-                                              RealTimeProcesses(
-                                                serv: server,
-                                                interval: 5000,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            Container(
+                                              alignment: Alignment.centerRight,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: <Widget>[
+                                                  FetchServerInfo(
+                                                    serv: server,
+                                                    interval: 5000,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 10.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: <Widget>[
+                                                      Text("Processes\t\t\t"),
+                                                      RealTimeProcesses(
+                                                        serv: server,
+                                                        interval: 5000,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 10.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text("RAM\t\t\t"),
+                                                      RealTimeRAM(
+                                                        serv: server,
+                                                        interval: 5000,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

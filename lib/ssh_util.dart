@@ -68,7 +68,7 @@ class SSHPageState extends State<SSHPage> {
                     : Text(_result ?? "NULL",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 12,
                           fontStyle: FontStyle.normal,
                         )),
               ),

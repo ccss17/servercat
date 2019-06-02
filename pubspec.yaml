@@ -22,6 +22,7 @@ dependencies:
   ssh: ^0.0.3
   path_provider: ^1.1.0
   line_icons: ^0.2.0
+  tree_view: ^0.0.5
 
 dev_dependencies:
   flutter_test:

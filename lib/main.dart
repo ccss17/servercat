@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'home.dart';
-import 'fetch-cpu.dart';
+import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
 // 배찌 메인 아이콘 몇 개정 도 활용... 
 //  다음 주 월요일에는 로그랑 히스토리 기능 + 디렉토리 살짝 보여줄 수 있는 정도로만 하고
 // 월요일에는 다 프로젝트를 끝낸ㄴ다는 느낌으로 가자
