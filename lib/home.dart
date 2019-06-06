@@ -178,7 +178,7 @@ class HomePageState extends State<HomePage> {
           Row(
             children: <Widget>[
               SizedBox(
-                width: 150,
+                width: 115,
                 height: 100,
                 child: Center(
                   child: _getMap(loc),
@@ -361,7 +361,7 @@ class HomePageState extends State<HomePage> {
                 },
                 child: Container(
 //                          height: MediaQuery.of(context).size.width * 0.80,
-                  height: MediaQuery.of(context).size.width * 0.65,
+                  height: MediaQuery.of(context).size.width * 0.80,
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: _getBoxDeco(),
                   child: Column(
