@@ -23,6 +23,11 @@ class ProcessesChart extends StatelessWidget {
       seriesList,
       animate: animate,
       dateTimeFactory: const charts.LocalDateTimeFactory(),
+      behaviors: [
+        charts.ChartTitle('Processes',
+            titleOutsideJustification: charts.OutsideJustification.start,
+            innerPadding: 25),
+      ],
     );
   }
 
@@ -41,7 +46,7 @@ class ProcessesChart extends StatelessWidget {
     return [
       charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.cyan.shadeDefault,
         domainFn: (TimeSeriesSales data, _) => data.time,
         measureFn: (TimeSeriesSales data, _) => data.data,
         data: data,

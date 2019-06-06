@@ -58,16 +58,22 @@ class AddPageState extends State<AddPage> {
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.greenAccent,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Add'),
+        title: Text(
+          'Add',
+          style: TextStyle(color: Colors.greenAccent),
+        ),
         centerTitle: true,
         actions: <Widget>[
           MaterialButton(
             child: Text(
               "Save",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.greenAccent),
             ),
             onPressed: () async {
               setState(() {
@@ -118,55 +124,55 @@ class AddPageState extends State<AddPage> {
           SizedBox(
             height: 30,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              MaterialButton(
-                color: Color(0xffb3e5ff),
-                child: Text(
-                  "Save",
-                  style: TextStyle(color: Colors.black),
-                ),
-                onPressed: () async {
-                  setState(() {
-                    checkAllTextController();
-                  });
-                  if (allfilled()) {
-                    var data = Map<String, dynamic>();
-                    data['domain'] = _domain.text;
-                    data['sshid'] = _sshid.text;
-                    data['label'] = _label.text;
-                    data['pw'] = _pw.text;
-                    data['port'] = _port.text;
-                    data['uuid'] = _uuid;
-                    data['protocol'] = _protocol.text;
-                    data['uid'] = authService.getUid();
-                    Firestore.instance.runTransaction((transaction) async {
-                      await transaction.set(
-                          Firestore.instance
-                              .collection("servers")
-                              .document(data['uuid']),
-                          data);
-                    });
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-              SizedBox(
-                width: 50,
-              ),
-              MaterialButton(
-                color: Colors.red,
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ),
+//          Row(
+//            mainAxisAlignment: MainAxisAlignment.center,
+//            children: <Widget>[
+//              MaterialButton(
+//                color: Color(0xffb3e5ff),
+//                child: Text(
+//                  "Save",
+//                  style: TextStyle(color: Colors.black),
+//                ),
+//                onPressed: () async {
+//                  setState(() {
+//                    checkAllTextController();
+//                  });
+//                  if (allfilled()) {
+//                    var data = Map<String, dynamic>();
+//                    data['domain'] = _domain.text;
+//                    data['sshid'] = _sshid.text;
+//                    data['label'] = _label.text;
+//                    data['pw'] = _pw.text;
+//                    data['port'] = _port.text;
+//                    data['uuid'] = _uuid;
+//                    data['protocol'] = _protocol.text;
+//                    data['uid'] = authService.getUid();
+//                    Firestore.instance.runTransaction((transaction) async {
+//                      await transaction.set(
+//                          Firestore.instance
+//                              .collection("servers")
+//                              .document(data['uuid']),
+//                          data);
+//                    });
+//                    Navigator.of(context).pop();
+//                  }
+//                },
+//              ),
+//              SizedBox(
+//                width: 50,
+//              ),
+//              MaterialButton(
+//                color: Colors.red,
+//                child: Text(
+//                  "Cancel",
+//                  style: TextStyle(color: Colors.white),
+//                ),
+//                onPressed: () {
+//                  Navigator.of(context).pop();
+//                },
+//              )
+//            ],
+//          ),
         ],
       ),
     );

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import '../fetchdata.dart';
 import '../server.dart';
 
-class RAMChart extends StatelessWidget {
+class CPUChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
 
-  RAMChart(this.seriesList, {this.animate});
+  CPUChart(this.seriesList, {this.animate});
 
-  factory RAMChart.withJson(Map<String, dynamic> data) {
-    return RAMChart(
+  factory CPUChart.withJson(Map<String, dynamic> data) {
+    return CPUChart(
       _createJsonData(data),
       animate: false,
     );
@@ -25,7 +25,7 @@ class RAMChart extends StatelessWidget {
           charts.LineRendererConfig(includeArea: true, stacked: true),
       animate: animate,
       behaviors: [
-        charts.ChartTitle('RAM',
+        charts.ChartTitle('CPU',
             titleOutsideJustification: charts.OutsideJustification.start,
             innerPadding: 25),
       ],
@@ -38,13 +38,14 @@ class RAMChart extends StatelessWidget {
     List<LinearSales> data2 = List<LinearSales>();
     List<LinearSales> data3 = List<LinearSales>();
     List<LinearSales> data4 = List<LinearSales>();
+    List<LinearSales> data5 = List<LinearSales>();
 
     List<LinearSales> initData(int idx) {
       List<LinearSales> data = List<LinearSales>();
       int i = 0;
       for (var e in jsonData['data']) {
         i++;
-//        if (i == 120) break;
+        if (i == 300) break;
         data.add(LinearSales(
             DateTime.fromMicrosecondsSinceEpoch(e[0] * 1000000),
             e[idx].round()));
@@ -56,10 +57,11 @@ class RAMChart extends StatelessWidget {
     data2 = initData(2);
     data3 = initData(3);
     data4 = initData(4);
+    data5 = initData(5);
 
     return [
       charts.Series<LinearSales, DateTime>(
-        id: 'buffers',
+        id: 'steal',
         colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
         areaColorFn: (_, __) =>
             charts.MaterialPalette.deepOrange.shadeDefault.lighter,
@@ -68,7 +70,7 @@ class RAMChart extends StatelessWidget {
         data: data,
       ),
       charts.Series<LinearSales, DateTime>(
-        id: 'cached',
+        id: 'softirq',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         areaColorFn: (_, __) =>
             charts.MaterialPalette.blue.shadeDefault.lighter,
@@ -77,7 +79,7 @@ class RAMChart extends StatelessWidget {
         data: data2,
       ),
       charts.Series<LinearSales, DateTime>(
-        id: 'used',
+        id: 'user',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         areaColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
         domainFn: (LinearSales sales, _) => sales.year,
@@ -85,41 +87,49 @@ class RAMChart extends StatelessWidget {
         data: data3,
       ),
       charts.Series<LinearSales, DateTime>(
-        id: 'free',
+        id: 'system',
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+        areaColorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+        domainFn: (LinearSales sales, _) => sales.year,
+        measureFn: (LinearSales sales, _) => sales.sales,
+        data: data4,
+      ),
+      charts.Series<LinearSales, DateTime>(
+        id: 'iowait',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         areaColorFn: (_, __) =>
             charts.MaterialPalette.green.shadeDefault.lighter,
         domainFn: (LinearSales sales, _) => sales.year,
         measureFn: (LinearSales sales, _) => sales.sales,
-        data: data4,
+        data: data5,
       ),
     ];
   }
 }
 
-class FetchRAM extends StatefulWidget {
+class FetchCPU extends StatefulWidget {
   final Server serv;
   final int interval;
 
-  FetchRAM({this.serv, this.interval});
+  FetchCPU({this.serv, this.interval});
   @override
-  FetchRAMState createState() =>
-      FetchRAMState(serv: this.serv, interval: this.interval);
+  FetchCPUState createState() =>
+      FetchCPUState(serv: this.serv, interval: this.interval);
 }
 
-class FetchRAMState extends State<FetchRAM> {
+class FetchCPUState extends State<FetchCPU> {
   Future<Map<String, dynamic>> post;
   final Server serv;
   final int interval;
   Timer _timer;
 
-  FetchRAMState({this.serv, this.interval}) {
-    post = fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
+  FetchCPUState({this.serv, this.interval}) {
+    post = fetchData(serv.protocol, serv.domain, serv.port, 'system.cpu');
   }
 
   _generateTrace(Timer t) {
     setState(() {
-      post = fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
+      post = fetchData(serv.protocol, serv.domain, serv.port, 'system.cpu');
     });
   }
 
@@ -140,7 +150,7 @@ class FetchRAMState extends State<FetchRAM> {
     return FutureBuilder<Map<String, dynamic>>(
         future: post,
         builder: (context, snapshot) {
-          return RAMChart.withJson(snapshot.data);
+          return CPUChart.withJson(snapshot.data);
         });
   }
 }

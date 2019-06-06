@@ -6,10 +6,9 @@ import 'auth.dart';
 import 'server.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:flutter_netdata/netdata-realtime/realtime-processes.dart';
+import 'package:flutter_netdata/netdata-realtime/realtime-cpu.dart';
 import 'package:flutter_netdata/netdata-realtime/realtime-ram.dart';
 import 'netdata-charts/fetch-info.dart';
-
-const LatLng _center = const LatLng(36.018932, 129.342941);
 
 // https://sergiandreplace.com/planets-flutter-creating-a-planet-card/
 // 여기에 가이드 나와있는 Stack 으로 구글 맵 해서 위도경도 표시해주고싶다
@@ -19,7 +18,7 @@ class HomePage extends StatefulWidget {
   final drawerItems = [
     DrawerItem("Add Server", LineIcons.plus),
     DrawerItem("Sign out", LineIcons.sign_out),
-    DrawerItem("test out", LineIcons.sign_out),
+//    DrawerItem("test out", LineIcons.sign_out),
   ];
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +39,10 @@ class HomePageState extends State<HomePage> {
   int _selectedDrawerIndex = 0;
   Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = const LatLng(36.018932, 129.342941);
+  static const LatLng _pohang = const LatLng(36.018932, 129.342941);
+  static const LatLng _yeosu = const LatLng(34.760372, 127.662224);
+  static const LatLng _seoul = const LatLng(37.566536, 126.977966);
+  static const LatLng _tokyo = const LatLng(35.689487, 139.691711);
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -97,7 +99,7 @@ class HomePageState extends State<HomePage> {
             Container(
               child: DrawerHeader(
                   child: Center(
-                      child: Text("Flutter\nNetdata",
+                      child: Text("Server Cat",
                           style: TextStyle(
                             fontSize: 39,
                             color: Colors.greenAccent,
@@ -118,7 +120,8 @@ class HomePageState extends State<HomePage> {
 
   Widget _getFloatBtn() {
     return FloatingActionButton(
-      backgroundColor: Color(0xff75d701),
+//      backgroundColor: Color(0xff75d701),
+      backgroundColor: Colors.red,
       onPressed: () {
         Navigator.of(context).pushNamed('/add');
       },
@@ -135,13 +138,19 @@ class HomePageState extends State<HomePage> {
       brightness: Brightness.light,
       leading: Builder(
         builder: (context) => IconButton(
-              icon: Icon(LineIcons.navicon),
+              icon: Icon(
+                LineIcons.navicon,
+                color: Colors.greenAccent,
+              ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
             ),
       ),
-      title: Text('Server List'),
+      title: Text(
+        'Server List',
+        style: TextStyle(color: Colors.greenAccent),
+      ),
       centerTitle: true,
     );
   }
@@ -160,47 +169,47 @@ class HomePageState extends State<HomePage> {
         ]);
   }
 
-  _getTopCard(Server server) {
+  _getTopCard(Server server, LatLng loc) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           SizedBox(
-            width: 70,
-            height: 70,
+            width: 150,
+            height: 100,
             child: Center(
-              child:
-                  // test,
-                  Text(
-                "GOOGLE\nMAP\nPLACE",
-                style: Theme.of(context).textTheme.caption,
-              ),
+              child: _getMap(loc),
             ),
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 server.label ?? "NULL",
                 style: TextStyle(fontSize: 30),
               ),
-              Text(
-                "SERVER STATE",
-                style: TextStyle(
-                  color: Colors.green,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                server.domain,
-                style: Theme.of(context).textTheme.caption,
-              ),
-              Text(
-                server.sshid,
-                style: Theme.of(context).textTheme.caption,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "NORMAL",
+                    style: TextStyle(
+                      color: Colors.green,
+                    ),
+                  ),
+                  Text(
+                    server.domain,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Text(
+                    server.sshid,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ],
               ),
             ],
           ),
@@ -209,6 +218,10 @@ class HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Text(
+                    'CPU',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text(
                     'Proc',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -225,6 +238,10 @@ class HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  RealTimeCPU(
+                    serv: server,
+                    interval: 5000,
+                  ),
                   RealTimeProcesses(
                     serv: server,
                     interval: 5000,
@@ -242,70 +259,75 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  _getDeleteIcon(DocumentSnapshot data) {
+  _getSettingIcons(DocumentSnapshot data, Server serv) {
     return Container(
       alignment: Alignment.center,
-      child: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: Color(0xee6666b2),
-                  title: Text(
-                    "Delete Server",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      color: Colors.blue,
-                      child: Center(
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(color: Colors.white),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            color: Colors.deepPurple,
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).pushNamed(('/edit'), arguments: serv);
+            },
+          ),
+          IconButton(
+//            color: Colors.deepOrange,
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Color(0xff353848),
+//                      backgroundColor: Color(0xee6666b2),
+                      title: Text(
+                        "Delete Server",
+                        style: TextStyle(color: Colors.greenAccent),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          color: Colors.blue,
+                          child: Center(
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          onPressed: () {
+                            Firestore.instance
+                                .runTransaction((transaction) async {
+                              await transaction.delete(data.reference);
+                            });
+                            Navigator.of(context).pop();
+                          },
                         ),
-                      ),
-                      onPressed: () {
-                        Firestore.instance.runTransaction((transaction) async {
-                          await transaction.delete(data.reference);
-                        });
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(width: 10),
-                    FlatButton(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                );
-              });
-        },
+                        FlatButton(
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            },
+          ),
+        ],
       ),
     );
   }
 
-  Widget _getMap() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Center(
-        child: SizedBox(
-          width: 100.0,
-          height: 100.0,
-          child: GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 15.0,
-            ),
-          ),
-        ),
+  Widget _getMap(LatLng loc) {
+    return GoogleMap(
+      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: loc,
+        zoom: 15.0,
       ),
     );
   }
@@ -323,46 +345,44 @@ class HomePageState extends State<HomePage> {
               .where('uid', isEqualTo: authService.getUid())
               .snapshots(),
           builder: (context, snapshot) {
-            return ListView(
-              children: (false)
-                  ? <Widget>[_getMap()]
-                  : snapshot.data.documents.map((data) {
-                      final server = Server.fromSnapshot(data);
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('/charts', arguments: server);
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.width * 0.80,
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          decoration: _getBoxDeco(),
-                          child: Column(
-                            children: <Widget>[
-                              _getTopCard(server),
-                              Divider(),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 14.0, vertical: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    FetchServerInfo(
-                                      serv: server,
-                                      interval: 5000,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              _getDeleteIcon(data)
-                              // MapTest(),
-                            ],
-                          ),
+            List<Widget> test = List<Widget>();
+            for (int i = 0; i < snapshot.data.documents.length; i++) {
+              final server = Server.fromSnapshot(snapshot.data.documents[i]);
+              test.add(GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/charts', arguments: server);
+                },
+                child: Container(
+//                          height: MediaQuery.of(context).size.width * 0.80,
+                  height: MediaQuery.of(context).size.width * 0.65,
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  decoration: _getBoxDeco(),
+                  child: Column(
+                    children: <Widget>[
+                      _getTopCard(server, (i % 2 == 0) ? _seoul : _tokyo),
+//                      _getTopCard(server, (i % 2 == 0) ? _y eosu : _pohang),
+                      Divider(),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 14.0, vertical: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FetchServerInfo(
+                              serv: server,
+                              interval: 5000,
+                            ),
+                          ],
                         ),
-                      );
-                    }).toList(),
-            );
+                      ),
+                      _getSettingIcons(snapshot.data.documents[i], server)
+                      // MapTest(),
+                    ],
+                  ),
+                ),
+              ));
+            }
+            return ListView(children: test);
           },
         ));
   }

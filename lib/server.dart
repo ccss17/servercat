@@ -8,6 +8,7 @@ class Server {
   String pw;
   String port;
   String protocol;
+  String uuid;
   DocumentReference reference;
 
   Server.fromMap(Map<String, dynamic> map, {this.reference})
@@ -18,6 +19,7 @@ class Server {
         pw = map['pw'],
         port = map['port'],
         protocol = map['protocol'],
+        uuid = map['uuid'],
         sshid = map['sshid'];
 
   Server.fromSnapshot(DocumentSnapshot snapshot)

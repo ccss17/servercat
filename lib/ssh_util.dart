@@ -63,7 +63,8 @@ class SSHPageState extends State<SSHPage> {
                         'SSH\n'
                         'REMOTE\n'
                         'TERMINAL\n',
-                        style: TextStyle(fontSize: 30.0, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 60.0, color: Colors.greenAccent),
                       )
                     : Text(_result,
                         style: TextStyle(
@@ -103,8 +104,8 @@ class SSHPageState extends State<SSHPage> {
                           child: MaterialButton(
                             child: Text(
                               cmdlog2.cmd,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                              style: TextStyle(
+                                  color: Colors.tealAccent, fontSize: 12),
                             ),
                             onPressed: () {
                               onClickCmd(cmdlog2.cmd);
@@ -125,7 +126,9 @@ class SSHPageState extends State<SSHPage> {
                           child: MaterialButton(
                             child: Text(
                               cmdlog.cmd,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.tealAccent,
+                              ),
                             ),
                             onPressed: () {
                               onClickCmd(cmdlog.cmd);
@@ -178,21 +181,20 @@ class SSHPageState extends State<SSHPage> {
                       logs_col_ref.orderBy('timestamp', descending: true);
                   DocumentReference logs_ref =
                       logs_col_ref.document(logs['cmd']);
-                    Firestore.instance.runTransaction((transaction) async {
-                      await transaction.set(cmdlog_ref, cmdlog);
-                      await transaction.set(logs_ref, logs);
-                      var qs = await ordered.getDocuments();
-                      var qs_doc = qs.documents;
-                      var flag = 0;
-                      for (var i in qs_doc)
-                        if (i.data['cmd'] == logs['cmd']) flag = 1;
-                      var totallen = qs.documents.length;
-                      print(totallen);
-                      print(flag);
-                      if (totallen > 7 && flag != 1)
-                        await transaction
-                            .delete(qs_doc[totallen - 1].reference);
-                    });
+                  Firestore.instance.runTransaction((transaction) async {
+                    await transaction.set(cmdlog_ref, cmdlog);
+                    await transaction.set(logs_ref, logs);
+                    var qs = await ordered.getDocuments();
+                    var qs_doc = qs.documents;
+                    var flag = 0;
+                    for (var i in qs_doc)
+                      if (i.data['cmd'] == logs['cmd']) flag = 1;
+                    var totallen = qs.documents.length;
+                    print(totallen);
+                    print(flag);
+                    if (totallen > 7 && flag != 1)
+                      await transaction.delete(qs_doc[totallen - 1].reference);
+                  });
                   _cmd.text = '';
                 }
               },

@@ -5,10 +5,33 @@ import 'ssh_util.dart';
 import 'server.dart';
 import 'package:flutter_netdata/netdata-charts/fetch-processes.dart';
 import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
+import 'package:flutter_netdata/netdata-charts/fetch-cpu.dart';
 import 'package:line_icons/line_icons.dart';
 
 class Dashboard extends StatelessWidget {
   final Server serv;
+
+  getChartContainer(Widget chart) {
+    return Container(
+      height: 300.0,
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10.0,
+              offset: Offset(0.0, 10.0),
+            )
+          ]),
+      child: Padding(
+        padding: EdgeInsets.all(6.0),
+        child: chart,
+      ),
+    );
+  }
 
   Dashboard({this.serv});
   @override
@@ -21,17 +44,35 @@ class Dashboard extends StatelessWidget {
           backgroundColor: Colors.white70,
           appBar: AppBar(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.greenAccent,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             backgroundColor: Color(0xff353848),
             brightness: Brightness.light,
-            title: Text('Server ' + serv.label),
+            title: Text(
+              serv.label,
+              style: TextStyle(color: Colors.greenAccent),
+            ),
             bottom: TabBar(
               tabs: <Widget>[
-                Tab(icon: Icon(LineIcons.line_chart)),
-                Tab(icon: Icon(LineIcons.keyboard_o)),
-                Tab(icon: Icon(LineIcons.files_o)),
+                Tab(
+                    icon: Icon(
+                  LineIcons.line_chart,
+                  color: Colors.greenAccent,
+                )),
+                Tab(
+                    icon: Icon(
+                  LineIcons.keyboard_o,
+                  color: Colors.greenAccent,
+                )),
+                Tab(
+                    icon: Icon(
+                  LineIcons.files_o,
+                  color: Colors.greenAccent,
+                )),
               ],
             ),
           ),
@@ -40,52 +81,18 @@ class Dashboard extends StatelessWidget {
               ListView(
                 padding: EdgeInsets.all(8.0),
                 children: <Widget>[
-                  Container(
-                    height: 300.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-//                                color: Color(0xee6666b2),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10.0,
-                            offset: Offset(0.0, 10.0),
-                          )
-                        ]),
-                    child: SizedBox(
-                      height: 250.0,
-                      child: FetchProcesses(
-                        serv: serv,
-                        interval: 1000,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 300.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-//                                color: Color(0xee6666b2),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10.0,
-                            offset: Offset(0.0, 10.0),
-                          )
-                        ]),
-                    child: SizedBox(
-                      height: 250.0,
-                      child: FetchRAM(
-                        serv: serv,
-                        interval: 1000,
-                      ),
-                    ),
-                  ),
+                  getChartContainer(FetchCPU(
+                    serv: serv,
+                    interval: 1000,
+                  )),
+                  getChartContainer(FetchProcesses(
+                    serv: serv,
+                    interval: 1000,
+                  )),
+                  getChartContainer(FetchRAM(
+                    serv: serv,
+                    interval: 1000,
+                  )),
                 ],
               ),
               Container(
@@ -93,7 +100,6 @@ class Dashboard extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 decoration: BoxDecoration(
                     color: Colors.black87,
-//                                color: Color(0xee6666b2),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(8.0),
                     boxShadow: <BoxShadow>[
@@ -110,8 +116,6 @@ class Dashboard extends StatelessWidget {
                 height: 300.0,
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 decoration: BoxDecoration(
-//                    color: Colors.black87,
-//                                color: Color(0xee6666b2),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(8.0),
                     boxShadow: <BoxShadow>[

@@ -1,5 +1,34 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'auth.dart';
+
+class ShadowText extends StatelessWidget {
+  ShadowText(this.data, {this.style}) : assert(data != null);
+
+  final String data;
+  final TextStyle style;
+
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: Stack(
+        children: [
+          Positioned(
+            top: 2.0,
+            left: 2.0,
+            child: Text(
+              data,
+              style: style.copyWith(color: Colors.black.withOpacity(1.0)),
+            ),
+          ),
+          BackdropFilter(
+            filter: ui.ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
+            child: Text(data, style: style),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,44 +39,28 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff353848),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          children: <Widget>[
-            SizedBox(height: 80.0),
-            Container(
-              alignment: Alignment.center,
-              child: SizedBox(
-                child: Text(
-                  "Flutter",
+        backgroundColor: Color(0xff353848),
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+//                image: NetworkImage('https://picsum.photos/250?image=9')),
+                  image: AssetImage('assets/bg.PNG'))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                child: SizedBox(
+                    child: ShadowText(
+                  "Server Cat",
                   style: TextStyle(fontSize: 70, color: Colors.white),
-                ),
+                )),
               ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: SizedBox(
-                child: Text(
-                  "Netdata",
-                  style: TextStyle(fontSize: 70, color: Colors.white),
-                ),
-              ),
-            ),
-//            Column(
-//              children: <Widget>[
-//                Image.network(
-//                    'https://image.i-voce.jp/files/article/main/7Rt7xosL_1544077098.jpg'),
-//              ],
-//            ),
-            SizedBox(
-              height: 100,
-            ),
-            LoginButton(),
-          ],
-        ),
-      ),
-    );
+              LoginButton(),
+            ],
+          ),
+        ));
   }
 }
 
@@ -60,6 +73,8 @@ class LoginButton extends StatelessWidget {
           if (snapshot.hasData) {
             Navigator.pop(context);
             return MaterialButton(
+              height: MediaQuery.of(context).size.height * 0.05,
+              minWidth: MediaQuery.of(context).size.width * 0.825,
               onPressed: () => {},
               color: Colors.black,
               textColor: Colors.white,
@@ -67,12 +82,12 @@ class LoginButton extends StatelessWidget {
             );
           } else {
             return MaterialButton(
-              height: 50,
-              minWidth: 100,
+              height: MediaQuery.of(context).size.height * 0.05,
+              minWidth: MediaQuery.of(context).size.width * 0.825,
               onPressed: () => authService.googleSignIn(),
               color: Colors.red,
               textColor: Colors.white,
-              child: Text('Google'),
+              child: Text('Google Login'),
             );
           }
         });
