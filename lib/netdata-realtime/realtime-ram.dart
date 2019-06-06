@@ -48,8 +48,7 @@ class RealTimeRAMState extends State<RealTimeRAM> {
         future: ram,
         builder: (context, snapshot) {
           List<dynamic> data = snapshot.data['data'];
-          print(data[data.length - 1]);
-          return Text(data[data.length - 1][1].round().toString());
+          return Text(data[0][1].round().toString());
         });
   }
 }

@@ -49,9 +49,7 @@ class RealTimeCPUState extends State<RealTimeCPU> {
         future: cpu,
         builder: (context, snapshot) {
           List<dynamic> data = snapshot.data['data'];
-          print(data[data.length - 1]);
-          return Text(
-              NumberFormat("###.##").format(data[data.length - 1][3]) + '%');
+          return Text(NumberFormat("###.##").format(data[0][3]) + '%');
         });
   }
 }

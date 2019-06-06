@@ -50,7 +50,7 @@ class RealTimeProcessesState extends State<RealTimeProcesses> {
         future: processes,
         builder: (context, snapshot) {
           List<dynamic> data = snapshot.data['data'];
-          return Text(data[data.length - 1][1].toString());
+          return Text(data[0][1].toString());
         });
   }
 }
