@@ -50,7 +50,9 @@ class AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff333366),
+      // backgroundColor: Colors.white70,
+      // backgroundColor: Color(0xff333366),
+      backgroundColor: Color(0xffe2e2e2),
       appBar: AppBar(
         backgroundColor: Color(0xff353848),
         automaticallyImplyLeading: false,
@@ -120,10 +122,10 @@ class AddPageState extends State<AddPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               MaterialButton(
-                color: Colors.blueAccent,
+                color: Color(0xffb3e5ff),
                 child: Text(
                   "Save",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () async {
                   setState(() {
@@ -151,7 +153,7 @@ class AddPageState extends State<AddPage> {
                 },
               ),
               SizedBox(
-                width: 10,
+                width: 50,
               ),
               MaterialButton(
                 color: Colors.red,
@@ -180,16 +182,15 @@ class AddPageState extends State<AddPage> {
         autofocus: true,
         controller: _controller,
         decoration: InputDecoration(
-          fillColor: Color(0xee6666b2),
+          fillColor: Colors.white,
+          // fillColor: Color(0xee6666b2),
           filled: true,
           helperText: help, // "This is help message",
           labelText: _label,
-          labelStyle: TextStyle(color: Color(0xffababd3)),
-          helperStyle: TextStyle(color: Color(0xffababd3)),
           errorText: validate ? _error : null,
         ),
         obscureText: obscure,
-        style: TextStyle(color: Colors.white),
+        // style: TextStyle(color: Colors.white),
       ),
     );
   }

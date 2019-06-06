@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tree_view/tree_view.dart';
+import 'package:line_icons/line_icons.dart';
 
 class DirectoryView extends StatefulWidget {
   @override
@@ -139,8 +140,12 @@ class DirectoryWidget extends StatelessWidget {
           Utils.getFormattedDateTime(dateTime: lastModified),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.navigate_next),
-          onPressed: onPressedNext,
+          // icon: Icon(Icons.navigate_next),
+          icon: Icon(LineIcons.folder_open),
+          onPressed: () {
+            onPressedNext();
+
+          },
         ),
       ),
     );

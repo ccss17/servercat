@@ -20,6 +20,10 @@ class Dashboard extends StatelessWidget {
           // backgroundColor: Color(0xff333366),
           backgroundColor: Colors.white70,
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
+            ),
             backgroundColor: Color(0xff353848),
             brightness: Brightness.light,
             title: Text('Server ' + serv.label),

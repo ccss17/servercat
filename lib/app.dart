@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'home.dart';
+import 'map_test2.dart';
+import 'map_test.dart';
 import 'login.dart';
 import 'add.dart';
 import 'dashboard.dart';
@@ -24,6 +26,8 @@ class FlutterNetdata extends StatelessWidget {
         return _buildRoute(settings, LoginPage());
       case '/add':
         return _buildRoute(settings, AddPage());
+      case '/map':
+        return _buildRoute(settings, MapTest());
       case '/charts':
         return _buildRoute(
             settings,

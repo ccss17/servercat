@@ -10,25 +10,23 @@ class RealTimeRAM extends StatefulWidget {
 
   RealTimeRAM({this.serv, this.interval});
   @override
-  RealTimeRAMtate createState() =>
-      RealTimeRAMtate(serv: this.serv, interval: this.interval);
+  RealTimeRAMState createState() =>
+      RealTimeRAMState(serv: this.serv, interval: this.interval);
 }
 
-class RealTimeRAMtate extends State<RealTimeRAM> {
+class RealTimeRAMState extends State<RealTimeRAM> {
   Future<Map<String, dynamic>> ram;
   final Server serv;
   final int interval;
   Timer _timer;
 
-  RealTimeRAMtate({this.serv, this.interval}) {
-    ram =
-        fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
+  RealTimeRAMState({this.serv, this.interval}) {
+    ram = fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
   }
 
   _generateTrace(Timer t) {
     setState(() {
-      ram =
-          fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
+      ram = fetchData(serv.protocol, serv.domain, serv.port, 'system.ram');
     });
   }
 
@@ -50,7 +48,8 @@ class RealTimeRAMtate extends State<RealTimeRAM> {
         future: ram,
         builder: (context, snapshot) {
           List<dynamic> data = snapshot.data['data'];
-          return Text(data[data.length - 1][1].toString());
+          print(data[data.length - 1]);
+          return Text(data[data.length - 1][1].round().toString());
         });
   }
 }

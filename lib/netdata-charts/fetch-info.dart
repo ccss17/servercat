@@ -8,16 +8,77 @@ class ServerInfo extends StatelessWidget {
 
   ServerInfo(this.data);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _getLabels(String label) {
     return Column(
       children: <Widget>[
-        Text(data['version']),
-        Text(data['os_name']),
-        Text(data['os_version']),
-        Text(data['kernel_name']),
-        Text(data['kernel_version']),
-        Text(data['architecture']),
+        Text(
+          label,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _getInfo(String label, String data) {
+    return Container(
+      width: 300,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(data),
+        ],
+      ),
+    );
+  }
+
+  Widget _getLabelText(String label) {
+    return Text(
+      label,
+      style: TextStyle(fontWeight: FontWeight.bold),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _getLabelText('OS NAME'),
+            _getLabelText('OS VERSION'),
+            _getLabelText(
+              'KERNEL NAME',
+            ),
+            _getLabelText(
+              'KERNEL VERSION',
+            ),
+            _getLabelText(
+              'ARCHITECTURE',
+            ),
+            _getLabelText(
+              'NETDATA VERSION',
+            ),
+          ],
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(data['os_name']),
+            Text(data['os_version']),
+            Text(data['kernel_name']),
+            Text(data['kernel_version']),
+            Text(data['architecture']),
+            Text(data['version']),
+          ],
+        ),
       ],
     );
   }

@@ -65,7 +65,7 @@ class SSHPageState extends State<SSHPage> {
                         'TERMINAL\n',
                         style: TextStyle(fontSize: 30.0, color: Colors.white),
                       )
-                    : Text(_result ?? "NULL",
+                    : Text(_result,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -162,13 +162,12 @@ class SSHPageState extends State<SSHPage> {
             InkWell(
               onTap: () {
                 if (_cmd.text != null) {
+                  onClickCmd(_cmd.text);
+
                   var cmdlog = Map<String, dynamic>();
-                  cmdlog['uid'] = authService.getUid();
                   var logs = Map<String, dynamic>();
+                  cmdlog['uid'] = authService.getUid();
                   logs['cmd'] = _cmd.text;
-
-                  onClickCmd(logs['cmd']);
-
                   logs['timestamp'] = DateTime.now().millisecondsSinceEpoch;
                   DocumentReference cmdlog_ref = Firestore.instance
                       .collection("cmdlog")
@@ -179,20 +178,21 @@ class SSHPageState extends State<SSHPage> {
                       logs_col_ref.orderBy('timestamp', descending: true);
                   DocumentReference logs_ref =
                       logs_col_ref.document(logs['cmd']);
-                  Firestore.instance.runTransaction((transaction) async {
-                    await transaction.set(cmdlog_ref, cmdlog);
-                    await transaction.set(logs_ref, logs);
-                    var qs = await ordered.getDocuments();
-                    var qs_doc = qs.documents;
-                    var flag = 0;
-                    for (var i in qs_doc)
-                      if (i.data['cmd'] == logs['cmd']) flag = 1;
-                    var totallen = qs.documents.length;
-                    print(totallen);
-                    print(flag);
-                    if (totallen > 7 && flag != 1)
-                      await transaction.delete(qs_doc[totallen - 1].reference);
-                  });
+                    Firestore.instance.runTransaction((transaction) async {
+                      await transaction.set(cmdlog_ref, cmdlog);
+                      await transaction.set(logs_ref, logs);
+                      var qs = await ordered.getDocuments();
+                      var qs_doc = qs.documents;
+                      var flag = 0;
+                      for (var i in qs_doc)
+                        if (i.data['cmd'] == logs['cmd']) flag = 1;
+                      var totallen = qs.documents.length;
+                      print(totallen);
+                      print(flag);
+                      if (totallen > 7 && flag != 1)
+                        await transaction
+                            .delete(qs_doc[totallen - 1].reference);
+                    });
                   _cmd.text = '';
                 }
               },
