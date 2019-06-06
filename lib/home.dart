@@ -171,43 +171,50 @@ class HomePageState extends State<HomePage> {
 
   _getTopCard(Server server, LatLng loc) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          SizedBox(
-            width: 150,
-            height: 100,
-            child: Center(
-              child: _getMap(loc),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Row(
             children: <Widget>[
-              Text(
-                server.label ?? "NULL",
-                style: TextStyle(fontSize: 30),
+              SizedBox(
+                width: 150,
+                height: 100,
+                child: Center(
+                  child: _getMap(loc),
+                ),
+              ),
+              SizedBox(
+                width: 30,
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
                   Text(
-                    "NORMAL",
-                    style: TextStyle(
-                      color: Colors.green,
-                    ),
+                    server.label ?? "NULL",
+                    style: TextStyle(fontSize: 30),
                   ),
-                  Text(
-                    server.domain,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Text(
-                    server.sshid,
-                    style: Theme.of(context).textTheme.caption,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "NORMAL",
+                        style: TextStyle(
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(
+                        server.domain,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      Text(
+                        server.sshid,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -327,7 +334,7 @@ class HomePageState extends State<HomePage> {
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: loc,
-        zoom: 15.0,
+        zoom: 10.0,
       ),
     );
   }
