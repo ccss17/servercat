@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../fetchdata.dart';
-import 'package:flutter_netdata/model/server.dart';
+import 'package:servercat/model/server.dart';
 
 class RAMChart extends StatelessWidget {
   final List<charts.Series> seriesList;

@@ -3,9 +3,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:flutter_netdata/netdata-realtime/realtime-processes.dart';
-import 'package:flutter_netdata/netdata-realtime/realtime-cpu.dart';
-import 'package:flutter_netdata/netdata-realtime/realtime-ram.dart';
+import 'package:servercat/netdata-realtime/realtime-processes.dart';
+import 'package:servercat/netdata-realtime/realtime-cpu.dart';
+import 'package:servercat/netdata-realtime/realtime-ram.dart';
 
 import '../netdata-charts/fetch-info.dart';
 import '../auth.dart';

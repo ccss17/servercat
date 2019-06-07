@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_netdata/ui/ssh.dart';
-import 'package:flutter_netdata/netdata-charts/fetch-processes.dart';
-import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
-import 'package:flutter_netdata/netdata-charts/fetch-cpu.dart';
+import 'package:servercat/ui/ssh.dart';
+import 'package:servercat/netdata-charts/fetch-processes.dart';
+import 'package:servercat/netdata-charts/fetch-ram.dart';
+import 'package:servercat/netdata-charts/fetch-cpu.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'directory.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import '../fetchdata.dart';
-import 'package:flutter_netdata/model/server.dart';
+import 'package:servercat/model/server.dart';
 
 class RealTimeProcesses extends StatefulWidget {
   final Server serv;

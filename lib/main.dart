@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_netdata/ui/servercat.dart';
+import 'package:servercat/ui/servercat.dart';
 
 void main() => runApp(ServerCat());
 

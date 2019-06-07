@@ -1,5 +1,5 @@
-name: flutter_netdata
-description: A new Flutter project.
+name: servercat
+description: A server monitoring app
 version: 1.0.0+1
 
 environment:

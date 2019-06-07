@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_netdata/ui/dashboard.dart';
-import 'package:flutter_netdata/ui/edit.dart';
-import 'package:flutter_netdata/ui/login.dart';
-import 'package:flutter_netdata/ui/add.dart';
-import 'package:flutter_netdata/ui/detail.dart';
+import 'package:servercat/ui/dashboard.dart';
+import 'package:servercat/ui/edit.dart';
+import 'package:servercat/ui/login.dart';
+import 'package:servercat/ui/add.dart';
+import 'package:servercat/ui/detail.dart';
 
 class ServerCat extends StatelessWidget {
   @override
