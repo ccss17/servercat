@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_netdata/ssh_util.dart';
-import 'directory.dart';
-import 'ssh_util.dart';
-import 'server.dart';
+import 'package:flutter_netdata/ui/ssh.dart';
 import 'package:flutter_netdata/netdata-charts/fetch-processes.dart';
 import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
 import 'package:flutter_netdata/netdata-charts/fetch-cpu.dart';
 import 'package:line_icons/line_icons.dart';
 
-class Dashboard extends StatelessWidget {
+import 'directory.dart';
+import 'ssh.dart';
+import '../model/server.dart';
+
+class DetailPage extends StatelessWidget {
   final Server serv;
 
   getChartContainer(Widget chart) {
@@ -33,14 +34,13 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  Dashboard({this.serv});
+  DetailPage({this.serv});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          // backgroundColor: Color(0xff333366),
           backgroundColor: Colors.white70,
           appBar: AppBar(
             leading: IconButton(

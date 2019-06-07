@@ -140,7 +140,6 @@ class DirectoryWidget extends StatelessWidget {
           Utils.getFormattedDateTime(dateTime: lastModified),
         ),
         trailing: IconButton(
-          // icon: Icon(Icons.navigate_next),
           icon: Icon(LineIcons.folder_open),
           onPressed: () {
             onPressedNext();

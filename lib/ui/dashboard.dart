@@ -2,27 +2,28 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'auth.dart';
-import 'server.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:flutter_netdata/netdata-realtime/realtime-processes.dart';
 import 'package:flutter_netdata/netdata-realtime/realtime-cpu.dart';
 import 'package:flutter_netdata/netdata-realtime/realtime-ram.dart';
-import 'netdata-charts/fetch-info.dart';
 
-// https://sergiandreplace.com/planets-flutter-creating-a-planet-card/
-// 여기에 가이드 나와있는 Stack 으로 구글 맵 해서 위도경도 표시해주고싶다
-// 그리고 서버 CPU, RAM, NetworkIO 간단하게 밑에 표시해주고 싶다.
+import '../netdata-charts/fetch-info.dart';
+import '../auth.dart';
+import '../model/server.dart';
 
-class HomePage extends StatefulWidget {
+const LatLng _pohang = const LatLng(36.018932, 129.342941);
+const LatLng _yeosu = const LatLng(34.760372, 127.662224);
+const LatLng _seoul = const LatLng(37.566536, 126.977966);
+const LatLng _tokyo = const LatLng(35.689487, 139.691711);
+
+class Dashboard extends StatefulWidget {
   final drawerItems = [
     DrawerItem("Add Server", LineIcons.plus),
     DrawerItem("Sign out", LineIcons.sign_out),
-//    DrawerItem("test out", LineIcons.sign_out),
   ];
   @override
   State<StatefulWidget> createState() {
-    return HomePageState();
+    return DashboardState();
   }
 }
 
@@ -33,16 +34,11 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
-class HomePageState extends State<HomePage> {
+class DashboardState extends State<Dashboard> {
   bool desc = false;
   String selectedCategory = 'ALL';
   int _selectedDrawerIndex = 0;
   Completer<GoogleMapController> _controller = Completer();
-
-  static const LatLng _pohang = const LatLng(36.018932, 129.342941);
-  static const LatLng _yeosu = const LatLng(34.760372, 127.662224);
-  static const LatLng _seoul = const LatLng(37.566536, 126.977966);
-  static const LatLng _tokyo = const LatLng(35.689487, 139.691711);
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -52,7 +48,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       _selectedDrawerIndex = index;
     });
-    Navigator.of(context).pop(); // close the drawer
+    Navigator.of(context).pop();
     switch (index) {
       case 0:
         Navigator.of(context).pushNamed('/add');
@@ -60,10 +56,6 @@ class HomePageState extends State<HomePage> {
       case 1:
         authService.signOut();
         Navigator.of(context).pushNamed('/login');
-        break;
-      case 2:
-        authService.signOut();
-        Navigator.of(context).pushNamed('/map');
         break;
       default:
         break;
@@ -120,7 +112,6 @@ class HomePageState extends State<HomePage> {
 
   Widget _getFloatBtn() {
     return FloatingActionButton(
-//      backgroundColor: Color(0xff75d701),
       backgroundColor: Colors.red,
       onPressed: () {
         Navigator.of(context).pushNamed('/add');
@@ -178,14 +169,14 @@ class HomePageState extends State<HomePage> {
           Row(
             children: <Widget>[
               SizedBox(
-                width: 115,
+                width: 100,
                 height: 100,
                 child: Center(
                   child: _getMap(loc),
                 ),
               ),
               SizedBox(
-                width: 30,
+                width: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -280,7 +271,6 @@ class HomePageState extends State<HomePage> {
             },
           ),
           IconButton(
-//            color: Colors.deepOrange,
             icon: Icon(Icons.delete),
             onPressed: () {
               showDialog(
@@ -288,7 +278,6 @@ class HomePageState extends State<HomePage> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       backgroundColor: Color(0xff353848),
-//                      backgroundColor: Color(0xee6666b2),
                       title: Text(
                         "Delete Server",
                         style: TextStyle(color: Colors.greenAccent),
@@ -352,22 +341,19 @@ class HomePageState extends State<HomePage> {
               .where('uid', isEqualTo: authService.getUid())
               .snapshots(),
           builder: (context, snapshot) {
-            List<Widget> test = List<Widget>();
+            List<Widget> serverList = List<Widget>();
             for (int i = 0; i < snapshot.data.documents.length; i++) {
               final server = Server.fromSnapshot(snapshot.data.documents[i]);
-              test.add(GestureDetector(
+              serverList.add(GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed('/charts', arguments: server);
                 },
                 child: Container(
-//                          height: MediaQuery.of(context).size.width * 0.80,
-                  height: MediaQuery.of(context).size.width * 0.80,
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: _getBoxDeco(),
                   child: Column(
                     children: <Widget>[
                       _getTopCard(server, (i % 2 == 0) ? _seoul : _tokyo),
-//                      _getTopCard(server, (i % 2 == 0) ? _y eosu : _pohang),
                       Divider(),
                       Container(
                         margin: EdgeInsets.symmetric(
@@ -383,13 +369,12 @@ class HomePageState extends State<HomePage> {
                         ),
                       ),
                       _getSettingIcons(snapshot.data.documents[i], server)
-                      // MapTest(),
                     ],
                   ),
                 ),
               ));
             }
-            return ListView(children: test);
+            return ListView(children: serverList);
           },
         ));
   }

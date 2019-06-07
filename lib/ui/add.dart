@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-import 'auth.dart';
+import '../auth.dart';
 
 class AddPage extends StatefulWidget {
   @override

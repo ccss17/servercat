@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'cmdlog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:ssh/ssh.dart';
-import 'auth.dart';
+import '../auth.dart';
+import '../model/cmdlog.dart';
 
 class SSHPage extends StatefulWidget {
   String host;
@@ -64,7 +64,7 @@ class SSHPageState extends State<SSHPage> {
                         'REMOTE\n'
                         'TERMINAL\n',
                         style: TextStyle(
-                            fontSize: 60.0, color: Colors.greenAccent),
+                            fontSize: 40.0, color: Colors.greenAccent),
                       )
                     : Text(_result,
                         style: TextStyle(

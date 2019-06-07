@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-import 'auth.dart';
+
+import '../auth.dart';
 
 class ShadowText extends StatelessWidget {
   ShadowText(this.data, {this.style}) : assert(data != null);
@@ -44,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
-//                image: NetworkImage('https://picsum.photos/250?image=9')),
                   image: AssetImage('assets/bg.PNG'))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

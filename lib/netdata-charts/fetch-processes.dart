@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../fetchdata.dart';
-import '../server.dart';
+import 'package:flutter_netdata/model/server.dart';
 
 class ProcessesChart extends StatelessWidget {
   final List<charts.Series> seriesList;

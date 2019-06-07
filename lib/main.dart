@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'app.dart';
-import 'home.dart';
-import 'package:flutter_netdata/netdata-charts/fetch-ram.dart';
-// 배찌 메인 아이콘 몇 개정 도 활용... 
+import 'package:flutter_netdata/ui/servercat.dart';
+
+void main() => runApp(ServerCat());
+
+// TODO
+// 배찌 메인 아이콘 몇 개정 도 활용...
 //  다음 주 월요일에는 로그랑 히스토리 기능 + 디렉토리 살짝 보여줄 수 있는 정도로만 하고
 // 월요일에는 다 프로젝트를 끝낸ㄴ다는 느낌으로 가자
-// 그리고 또 다른 디테일은 1.5 2.0 버전에 넣겠다 라는 로드맵을 짜버려 그냥! 
+// 그리고 또 다른 디테일은 1.5 2.0 버전에 넣겠다 라는 로드맵을 짜버려 그냥!
 
-// 디렉토리 나열 그래서 만약 /var/log/nginx 를 버튼 클릭한다면, 그 파일의 컨텐츠를 볼 수 있는 거지 
+// 디렉토리 나열 그래서 만약 /var/log/nginx 를 버튼 클릭한다면, 그 파일의 컨텐츠를 볼 수 있는 거지
 // 차트는 디폴트로 CPU, 프로세스, 디스크 IO 보여줘바바 버전 1.0 에서는 차트를  다이나믹하게 추가해준느 건 나중에 해도 되!
-// 자주 사용하는 커맨드 버튼을 Listview 로 위로 올리기. - 그리고 그 버튼 바에 커맨드 재실행, 
+// 자주 사용하는 커맨드 버튼을 Listview 로 위로 올리기. - 그리고 그 버튼 바에 커맨드 재실행,
 
-
-void main() => runApp(FlutterNetdata());
-// void main() => runApp(FetchProcesses(post: fetchPost('system.processes')));
-// void main() => runApp(FetchCpu(post: fetchPost('system.cpu')));
 /*https://github.com/netdata/netdata/issues/2031
 넷데이터 어플을 깔쌈하게 만들어주면 0.99 달러 혹은 1.99 달러라도 지불할 용의가 있다는 것
 즉 서버 모니터링에 대한 수요가 분명히 있고, 그 모니터링에 대한 접근성을 쉽게 하기 위하여

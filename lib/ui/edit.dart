@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'auth.dart';
-import 'server.dart';
+
+import '../auth.dart';
+import '../model/server.dart';
 
 class EditPage extends StatefulWidget {
   Server serv;

@@ -11,9 +11,9 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
 
-  Observable<FirebaseUser> user; // firebase user
+  Observable<FirebaseUser> user;
   String _uid;
-  Observable<Map<String, dynamic>> profile; // custom user data in Firestore
+  Observable<Map<String, dynamic>> profile;
   PublishSubject loading = PublishSubject();
 
   String getUid() {
@@ -40,7 +40,6 @@ class AuthService {
     loading.add(true);
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    // FirebaseUser user = await _auth.signInWithGoogle(
     final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
     final FirebaseUser user = await _auth.signInWithCredential(credential);

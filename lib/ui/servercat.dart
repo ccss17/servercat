@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
-import 'edit.dart';
-import 'login.dart';
-import 'add.dart';
-import 'dashboard.dart';
+import 'package:flutter_netdata/ui/dashboard.dart';
+import 'package:flutter_netdata/ui/edit.dart';
+import 'package:flutter_netdata/ui/login.dart';
+import 'package:flutter_netdata/ui/add.dart';
+import 'package:flutter_netdata/ui/detail.dart';
 
-class FlutterNetdata extends StatelessWidget {
+class ServerCat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shrine',
-      home: HomePage(),
+      title: 'ServerCat',
+      home: Dashboard(),
       initialRoute: '/login',
       onGenerateRoute: _getRoute,
     );
@@ -20,7 +20,7 @@ class FlutterNetdata extends StatelessWidget {
   Route<dynamic> _getRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/home':
-        return _buildRoute(settings, HomePage());
+        return _buildRoute(settings, Dashboard());
       case '/login':
         return _buildRoute(settings, LoginPage());
       case '/add':
@@ -30,7 +30,7 @@ class FlutterNetdata extends StatelessWidget {
       case '/charts':
         return _buildRoute(
             settings,
-            Dashboard(
+            DetailPage(
               serv: settings.arguments,
             ));
       default:

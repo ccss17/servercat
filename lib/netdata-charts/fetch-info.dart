@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../fetchdata.dart';
-import '../server.dart';
+import 'package:flutter_netdata/model/server.dart';
 
 class ServerInfo extends StatelessWidget {
   Map<String, dynamic> data;
